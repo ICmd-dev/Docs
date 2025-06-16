@@ -63,9 +63,9 @@ flowchart LR
   G --> **
 ```
 
-<center>
+<p align="center" width="100%">
 <i> A signal graph with one source and one sink</i>
-</center>
+</p>
 
 <br>
 
@@ -105,9 +105,9 @@ Attributes --> Nodes
 Nodes --> Sink
 ```
 
-<center>
+<p align="center" width="100%">
 <i> A signal graph that depicts principal dependencies</i>
-</center>
+</p>
 
 
 ### 2.3.1 Layout Relativity

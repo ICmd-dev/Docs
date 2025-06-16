@@ -51,6 +51,10 @@ ICmd does not use _margin_ and _size_ to define the external layout properties. 
 | $r$  | Left margin of the right edge  |
 | $b$  | Top margin of the bottom edge  |
 
-<img src="assets/2.2.1.png" width="500em">
-   
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/2.2.1_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="assets/2.2.1_light.png">
+  <img srcset="assets/2.2.1_dark.png">
+</picture>
+
 One major reason to adopt this way is that it is intuitive to make layouts relative. For example, if we want to achieve a horizontal linear layout, we can just let every pair of adjacent node aligned by one's right edge and another one's left edge.

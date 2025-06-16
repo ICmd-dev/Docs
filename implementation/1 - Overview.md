@@ -45,5 +45,3 @@ We use Rust as our language to implement the main part of ICmd.
 What if there's no standard output or input? Or it seems platform-specific to achieve what we want? We need a low level as an intermediate part between the physical system and backend, which contains a set of formalized low level interfaces.
 
 We may use a language like C or Zig to achieve this from bare metal.
-
-## 1.3 - 

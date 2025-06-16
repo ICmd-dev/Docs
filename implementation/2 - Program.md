@@ -1,6 +1,6 @@
 # 2 - Program
 
-A ICmd program or application is made up with _nodes_. Each node has properties.
+A ICmd program or application is made up with _nodes_. Each node has attributes.
 
 ## 2.1 Node
 
@@ -11,10 +11,10 @@ Node is the minimal complete unit in ICmd render framework.
 
 ### 2.1.2 Explanation
 Similar to XML nodes, ICmd program is basically the visualization of _nodes_. A node can have the following natures:
-- **Node can have properties which stylize and arrange the the node.** If you have ever developed websites, you are familiar with CSS and HTML attributes. And properties in ICmd do the same job.
+- **Node can have attributes which stylize and arrange the the node.** If you have ever developed websites, you are familiar with CSS and HTML attributes. And attributes in ICmd do the same job.
 - **Node is dependent.** As one of the highlights in ICmd, dependency means what a node behaves depends on other nodes. Every attribute of a node is relative to that of another one. Based on this, we hold the following statements:
     - **There is only one node as a pivot which does not depend on any other nodes.** In ICmd, the pivot node is the console window. Any other nodes depend on it directly or indirectly.
-    - **Inheritance, which defines parent nodes and subnodes, is just a fixed set of dependent relations**. Fundamentally, there is no concept on subnodes or parent nodes in ICmd's design. Since every attribute is relative, it is not necessary to formally hold nodes as a tree. We can achieve subnodes by creating them with a fixed set of properties that depend on their parent nodes.
+    - **Inheritance, which defines parent nodes and subnodes, is just a fixed set of dependent relations**. Fundamentally, there is no concept on subnodes or parent nodes in ICmd's design. Since every attribute is relative, it is not necessary to formally hold nodes as a tree. We can achieve subnodes by creating them with a fixed set of attributes that depend on their parent nodes.
 - **Node is responsive.** Dependency of a node is kept throughout the runtime if there is no manual intervention. The relativity of nodes is maintained every moment by introducing responsive framework. With this method, it's easy to implement flexible layouts.
 
 ## 2.2 Attribute
@@ -42,7 +42,76 @@ We can divide all attributes into style, layout and misc attribute. In implement
 - **Style Attributes**: Define what a node looks like, such as background color, font size, and border style.
 - **Layout Attributes**: Define how a node is arranged, such as margin, padding, and size.
 
-ICmd does not use _margin_ and _size_ to define the external layout properties. Instead, it uses measures on edges.
+
+## 2.3 Dependency
+
+When a value depends on another one, the instantiation and changing is determined by the value it depends. We call a value varying along another one or several values a _signal_.
+
+In a responsive system, every signal forms a unilateral connected digraph where _source signals_ don't depend on any signals and _sink signals_ are not depended on by any signals. Once a signal changed, the signal directly or indirectly depending on it is changed in a chain reaction. In ICmd, source signals can be mouse and keyboard inputs and network listeners, and sink signals are always character printing since it is a TUI framework.
+
+```mermaid
+flowchart LR
+  *([Source]) 
+    --> A((A)) & B((B))
+    --> C((C)) & D((D))
+    --> **([Sink])
+
+  D --> E((E))
+  C --> F((F)) & G((G))
+  E --> **
+  F --> **
+  G --> **
+```
+
+<center>
+<i> A signal graph with one source and one sink</i>
+</center>
+
+<br>
+
+Except manual signal dependency, we can conclude principal dependencies according to the hierarchical structure of the framework. An example signal chain is like: Mouse clicks --> Background color changes --> The node changes --> Buffer to print changes.
+
+```mermaid
+stateDiagram-v2
+
+
+state Sources {
+  I1: Mouse Input
+  I2: Keyboard Input
+  I3: Window Size
+  I4: Manual Signals 
+  I5: ...
+}
+
+state Attributes {
+  A1: Layout Attributes
+  A2: Style Attributes
+  A3: Misc Attributes
+}
+
+state Nodes {
+  N1: $$Node_1$$
+  N2: $$Node_2$$
+  N3: $$Node_3$$
+  ...
+}
+
+state Sink {
+  X: Buffer to print
+}
+
+Sources --> Attributes
+Attributes --> Nodes
+Nodes --> Sink
+```
+
+<center>
+<i> A signal graph that depicts principal dependencies</i>
+</center>
+
+
+### 2.3.1 Layout Relativity
+ICmd does not use _margin_ and _size_ to define the external layout attributes. Instead, it uses measures on edges.
 
 | Annotation  | Definition |
 | ------------- | ------------- |

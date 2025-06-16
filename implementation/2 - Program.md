@@ -43,6 +43,7 @@ We can divide all attributes into style, layout and misc attribute. In implement
 - **Layout Attributes**: Define how a node is arranged, such as margin, padding, and size.
 
 ICmd does not use _margin_ and _size_ to define the external layout properties. Instead, it uses measures on edges.
+
 | Annotation  | Definition |
 | ------------- | ------------- |
 | $l$  | Left margin of the left edge  |
@@ -50,6 +51,6 @@ ICmd does not use _margin_ and _size_ to define the external layout properties. 
 | $r$  | Left margin of the right edge  |
 | $b$  | Top margin of the bottom edge  |
 
-![](assets/2.2.1.png)
+<img src="assets/2.2.1.png" width="500em">
    
 One major reason to adopt this way is that it is intuitive to make layouts relative. For example, if we want to achieve a horizontal linear layout, we can just let every pair of adjacent node aligned by one's right edge and another one's left edge.

@@ -42,6 +42,15 @@ We can divide all attributes into style, layout and misc attribute. In implement
 - **Style Attributes**: Define what a node looks like, such as background color, font size, and border style.
 - **Layout Attributes**: Define how a node is arranged, such as margin, padding, and size.
 
+Style attributes play a role in the drawing session of the program. Every node is drawn according to its style attributes. Layout attributes take effect in the layout session. Every measure of the node especially locations of vertices is determined with its layout attributes.
+
+### 2.2.2 By placeholder
+
+In default, it is exhausting to set all the attributes of a node. We tend to customize a small part of them. Therefore, we have to define behaviors for the unset attributes with placeholders.
+
+- **Default-value Attributes**: Unset attributes are set with the default value of the type. For example, if the type is integer, the default value will be zero. It is the easiest approach to define placeholders.
+- **Inherited Attributes**: Unset attributes are dependent values on the attributes from another node. For example, we may have created a box node with a custom font and want to apply it to all the "subnodes". Then with ideas of inherited attributes, we can create "subnodes" from the box node. It is an easy way to generalize attributes and achieve _themes_.
+
 
 ## 2.3 Dependency
 

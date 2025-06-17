@@ -44,17 +44,25 @@ We can divide all attributes into style, layout and misc attribute. In implement
 
 Style attributes play a role in the drawing session of the program. Every node is drawn according to its style attributes. Layout attributes take effect in the layout session. Every measure of the node especially locations of vertices is determined with its layout attributes.
 
-### 2.2.2 By placeholder
+### 2.2.2 By Placeholder
 
 In default, it is exhausting to set all the attributes of a node. We tend to customize a small part of them. Therefore, we have to define behaviors for the unset attributes with placeholders.
 
 - **Default-value Attributes**: Unset attributes are set with the default value of the type. For example, if the type is integer, the default value will be zero. It is the easiest approach to define placeholders.
 - **Inherited Attributes**: Unset attributes are dependent values on the attributes from another node. For example, we may have created a box node with a custom font and want to apply it to all the "subnodes". Then with ideas of inherited attributes, we can create "subnodes" from the box node. It is an easy way to generalize attributes and achieve _themes_.
 
+### 2.2.3 By Value
+
+It's intuitive to say that a integer that denotes color cannot be a margin attribute. So we have to further refine and restrict types with traits. For example, we can define a trait for color attributes which is implemented by integers, and when an integer is downcast to a color attribute, it cannot be converted to any other attribute like margin and padding.  
+
+By this idea, we can subdivide attributes into a variety. and they may have inheritance such as positional attribute and horizontal positional attribute. This approach can minimize unexpected arguments found in attribute settings.
+
 
 ## 2.3 Dependency
 
 When a value depends on another one, the instantiation and changing is determined by the value it depends. We call a value varying along another one or several values a _signal_.
+
+### 2.3.1 Design Pattern
 
 In a responsive system, every signal forms a unilateral connected digraph where _source signals_ don't depend on any signals and _sink signals_ are not depended on by any signals. Once a signal changed, the signal directly or indirectly depending on it is changed in a chain reaction. In ICmd, source signals can be mouse and keyboard inputs and network listeners, and sink signals are always character printing since it is a TUI framework.
 
@@ -99,9 +107,9 @@ state Attributes {
 }
 
 state Nodes {
-  N1: $$Node_1$$
-  N2: $$Node_2$$
-  N3: $$Node_3$$
+  N1: Node_1
+  N2: Node_2
+  N3: Node_3
   ...
 }
 
@@ -119,7 +127,7 @@ Nodes --> Sink
 </p>
 
 
-### 2.3.1 Layout Relativity
+### 2.3.2 Layout Relativity
 ICmd does not use _margin_ and _size_ to define the external layout attributes. Instead, it uses measures on edges.
 
 | Annotation  | Definition |
@@ -136,3 +144,11 @@ ICmd does not use _margin_ and _size_ to define the external layout attributes. 
 </picture>
 
 One major reason to adopt this way is that it is intuitive to make layouts relative. For example, if we want to achieve a horizontal linear layout, we can just let every pair of adjacent node aligned by one's right edge and another one's left edge.
+
+### 2.3.3 Attribute Relativity
+
+When relativity effects on not only layout attributes but ones on something else, it shows divine flexibility and scalability. Some practical usages are as follows.
+- Themes are nodes with a bunch of preset attributes for other nodes to depend on.
+- Callbacks are attributes who depend on external signals with effect
+- Animations are attributes who depend on a counter varying with time.
+- ...

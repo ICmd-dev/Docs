@@ -12,3 +12,7 @@ Rendering is not a coherent process with fps in ICmd. Instead, thanks to the res
 Escape codes can stylize the output characters. So we can always print colorful texts onto the terminal. ICmd uses some technique to insert minimal escape codes and necessary characters while keeping the visual effect.
 
 Escape codes can also control where to print. So temporally we compare the frame to be rendered with the last one and only update with difference. It is a more intuitive way that we can know which node is being rendered, precisely and subtly calculate where there is difference, and perform partial updates.
+
+## 3.2 - Implementation
+
+👷🔧

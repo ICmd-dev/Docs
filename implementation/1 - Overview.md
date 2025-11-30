@@ -1,8 +1,8 @@
-# 1 - Overview
+# 1 Overview
 
 ICmd contributors are supposed to finish reading the implementation document to know the design and principle of the entire project.
 
-## 1.1 - Principles
+## 1.1 Principles
 
 ### Lazy and Reactive
 
@@ -24,7 +24,7 @@ As a command-line UI framework, it shows the margin on its friendliness to all c
 
 However, for those embedding devices without a operation system, it can be rather tough to implement ICmd runtime on it. So it can't be generally compatible.
 
-## 1.2 - Structure
+## 1.2 Structure
 
 The framework is composed with the following parts which relatively separates each other for safety and abstraction.
 

@@ -1,7 +1,7 @@
-# 3 - Renderer
+# 3 Renderer
 In ICmd, renderer converts nodes into raw text.
 
-## 3.1 - Principles
+## 3.1 Principles
 
 Renderer is the key part of a TUI framework and its optimization as a component that frequently outputs large buffer. ICmd designs a renderer with as little overhead as possible. The principles are as follows:
 
@@ -13,9 +13,39 @@ Escape codes can stylize the output characters. So we can always print colorful 
 
 Escape codes can also control where to print. So temporally we compare the frame to be rendered with the last one and only update with difference. It is a more intuitive way that we can know which node is being rendered, precisely and subtly calculate where there is difference, and perform partial updates.
 
-## 3.2 - Implementation
+## 3.2 Definitions
 
-### 3.2.1 - how to get the 2D Frame(Gen by LLM)
+### 3.2.1 Basics
+
+**Text pixel** is a string with only one non-escape character.
+That is to say it can only be printed as one single character probably with styles decided with escape codes.
+
+**Renderer** can be represented as a function that maps an arbitrary *instruction* to an array of text pixels. Canonically, a renderer
+- Listens asynchronously for instructions from *the upper layer* of the framework.
+- Processes concurrently with pipeline technique.
+
+**Instruction** is the only input of the renderer. It is an enumeration structure over different types of instructions.
+
+| Types    | Fields | Explanation |
+| -------- | ------- | ---------- |
+| Initialize | Configurations; Viewport measures | Initialize the renderer |
+| Resize | Measures | Resize renderer's output |
+| Create | Node ID; Vertices; Shaders | Render the node |
+| Clear | Node ID | Clear the node |
+| Transform | Node ID; Matrix | Transform the node |
+| Specify | Node ID; Shaders | Update the shader of the node |
+
+### 3.2.2 Configurations
+
+Tbc.
+
+### 3.2.3 Shaders
+
+Tbc.
+
+## 3.3 Implementation
+
+### 3.2.1 how to get the 2D Frame(Gen by LLM)
 
 ```mermaid
 graph TD
@@ -59,7 +89,7 @@ graph TD
 - **Framebuffer**: Destination for rendered output
 - **Final 2D Bitmap**: Displayed result
 
-### 3.2.2 - Fxxk DexerMatter and transform the Bitmap to Escape Code(Gen by LLM)
+### 3.2.2 Fxxk DexerMatter and transform the Bitmap to Escape Code(Gen by LLM)
 
 ```mermaid
 graph TD
@@ -91,4 +121,3 @@ graph TD
 - **Escape Code Generation**: Generates minimal ANSI escape codes from the bitmap.
 - **Buffer Diff Calculation**: Compares current frame with previous frame to find differences
 - **Terminal Output**: Outputs only the changed portions to the terminal
-

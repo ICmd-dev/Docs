@@ -28,7 +28,7 @@ That is to say it can only be printed as one single character probably with styl
 
 | Types    | Fields | Explanation |
 | -------- | ------- | ---------- |
-| Initialize | Configurations; Viewport measures | Initialize the renderer |
+| Initialize | Configurations; Parent Viewport | Initialize the renderer |
 | Resize | Measures | Resize renderer's output |
 | Create | Node ID; Vertices; Shaders | Render the node |
 | Clear | Node ID | Clear the node |
@@ -37,11 +37,22 @@ That is to say it can only be printed as one single character probably with styl
 
 ### 3.2.2 Configurations
 
-Tbc.
+| Attr    | Fields | Explanation |
+| -------- | ------- | ---------- |
+| Primitives | Points; Lines; Triangles; Polygons| Specify the primitives to be rendered |
+| VertexArray | array | Specify the vertex data, in a two-dimensional array format, with each vertex consisting of two ints |
+| length | int | Specify the length of the coordinate space |
+| width | int | Specify the width of the coordinate space |
+
+
 
 ### 3.2.3 Shaders
 
-Tbc.
+| Attr    | Fields | Explanation |
+| -------- | ------- | ---------- |
+| ShaderFunc | func| Specify the shader function to be used, a map from Bitmap to string |
+| MapFunc | func | Calculate the length and width of the array before and after mapping to calculate the actual bitmap size required |
+
 
 ## 3.3 Implementation
 
@@ -91,33 +102,36 @@ graph TD
 
 ### 3.2.2 Fxxk DexerMatter and transform the Bitmap to Escape Code(Gen by LLM)
 
-```mermaid
-graph TD
-    A[Signal Update] --> B[Node Tree Update]
-    B --> C[Layout Calculation]
-    C --> D[Rendering]
-    D --> E[Node Blend Stage]
-    E --> f[Escape Code Generation]
-    f --> G[Buffer Diff Calculation]
-    G --> H[Terminal Output]
-```
+<picture>
+  <img srcset="assets/pipeline.drawio.png">
+</picture>
 
-#### **1. Signal Processing Phase**
+#### **1. Data**
 
-- **Signal Update**: Receives signals from the responsive system (mouse, keyboard, window resize, etc.)
-- **Node Tree Update**: Updates affected nodes based on signal dependencies and attribute relativity
+- **EBO**: Element Buffer Object, stores indices that define the order of vertex rendering
+- **VBO**: Stores vertex data, including positions, texture coordinates, and colors
 
-#### **2. Layout Phase**
+#### **2. Rasteration**
 
-- **Layout Calculation**: Computes node positions using edge-based layout system (l, t, r, b)
-- **Coordinate Transformation**: Converts relative coordinates to absolute terminal positions
+- **Primitive Assembly**: Assembles vertices into primitives (points, lines, triangles, polygons)
+- **Fragment Shader**: Calculates color for each fragment
+- **Rasteration**: Converts primitives into pixel fragments
+- **Bitmap**: Stores the rendered pixel data, with each pixel having a color value
 
-#### **3. Rendering Phase**
+#### **3. Escaping**
 
-- **Inheritance Resolution**: Resolves inherited attributes from parent nodes
-- **Style Application**: Apply style attributes (color, border, font) to nodes and convert them into textures, vertex and shader properties, then deliver them to the renderer. **Text will not be rendered as a bitmap, but will directly participate in Node Blend Stage.**
-- **Rendering**: Preparing the node data and get the 2D bitmap matrix. 
-- **Node Blend Stage**: Test mixing the bitmap with the text of each node.
-- **Escape Code Generation**: Generates minimal ANSI escape codes from the bitmap.
-- **Buffer Diff Calculation**: Compares current frame with previous frame to find differences
-- **Terminal Output**: Outputs only the changed portions to the terminal
+- **Shader**: Convert the bitmap to a string of text pixels
+- **Clip**: Clip the rendered bitmap to the viewport
+- **String**: text pixels for the frame
+
+#### **4. Blending**
+
+- **Request Queue**: Stores the blending requests, each containing the node ID, the text pixels, and the blending position
+- **Async Update**: Asynchronously update the frame with the blending requests
+- **Incremental Update**: Only update the changed parts of the frame, rather than the whole frame
+- **Blending**: Test mixing the text of each node.
+
+#### **5. User**
+
+- **Frame Buffer**: Stores the final frame buffer, which is the output of the renderer
+- **Terminal Output**: Displays the frame buffer on the terminal

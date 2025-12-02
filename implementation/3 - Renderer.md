@@ -102,9 +102,7 @@ graph TD
 
 ### 3.2.2 Fxxk DexerMatter and transform the Bitmap to Escape Code(Gen by LLM)
 
-<picture>
-  <img srcset="assets/pipeline.drawio.png">
-</picture>
+![pipeline](assets/pipeline.drawio.png)
 
 #### **1. Data**
 
